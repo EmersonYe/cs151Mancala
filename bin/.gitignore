@@ -1,4 +1,9 @@
 /DataModel.class
 /MancalaTester.class
+<<<<<<< HEAD
 /Pit.class
 /MancalaView.class
+=======
+/MancalaView.class
+/Pit.class
+>>>>>>> branch 'master' of https://github.com/EmersonYe/cs151Mancala
