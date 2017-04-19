@@ -11,8 +11,12 @@ import javax.swing.event.ChangeListener;
 public class DataModel {
 	
 	// +1 is for the Mancala
-	int[] a = new int[7];
-	int[] b = new int[7];
+	private String current;
+	int[] pits = new int[7];
+	int[] aClone;
+	int[] bClone;
+	private static final int MAX_UNDO = 3;
+	private int undos;
 	private ArrayList<ChangeListener> listeners;
 	
 	
@@ -27,6 +31,8 @@ public class DataModel {
 		{
 			a[i] = initialStoneCount;
 			b[i] = initialStoneCount;
+			aClone = a.clone();
+			bClone = b.clone(); 
 		}
 	}
 	
@@ -49,5 +55,31 @@ public class DataModel {
 		listeners.add(c);
 	}
 	
-	public 
+	public void undo()
+	{
+		undos = 0;
+		if (undos <= 3)
+		{
+			a = 
+		}
+	}
+	
+	public void move()
+	{
+		a = a.clone();
+		b = b.clone();
+	}
+	
+	public void captureOpposite(int lastStonePlaced)
+	{
+		if (lastStonePlaced >= 1 && lastStonePlaced <= 6) 
+		{ 
+			pits[lastStonePlaced] = pits[lastStonePlaced + 6];
+			pits[lastStonePlaced + 6] = 0;
+			// test
+		}
+	}
+	
+	
+	
 }
