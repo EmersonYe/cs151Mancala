@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-//testing emersonBranch
-//test2
-public class Pit {
-
-}
-=======
 //testing emersonBranch
 public class Pit {
 
