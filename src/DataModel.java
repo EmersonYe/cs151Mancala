@@ -1,23 +1,24 @@
 import java.util.ArrayList;
-
 import javax.swing.event.ChangeListener;
 
 /**
  * Holds information about pits and how many stones/pit
  * 4/11/17
- * @author emersonye
+ * @author emersonye, Karl Lapuz
  *
  */
 public class DataModel {
 	
-	// +1 is for the Mancala
-	private String current;
-	int[] pits = new int[7];
-	int[] aClone;
-	int[] bClone;
-	private static final int MAX_UNDO = 3;
+	private boolean isPlayerAsTurn;
+	private int[] pits;
+	private int[] clone;
 	private int undos;
+	private int lastStonePlaced;
 	private ArrayList<ChangeListener> listeners;
+	
+	private static final int MAX_UNDO = 3;
+	private static final int PLAYER_A_MANCALA = 13;
+	private static final int PLAYER_B_MANCALA = 0;
 	
 	
 	/**
@@ -26,24 +27,21 @@ public class DataModel {
 	 */
 	public DataModel(int initialStoneCount)
 	{
-		//Set all 6 pits of each player = to initial stone count. Skip over Mancala
-		for (int i = 0; i < 6; i++)
+		pits = new int[14];
+		for (int i = 1; i <= 12; i++) // 0th and 13th indeces are mancalas
 		{
-			a[i] = initialStoneCount;
-			b[i] = initialStoneCount;
-			aClone = a.clone();
-			bClone = b.clone(); 
+			pits[i] = initialStoneCount;
 		}
+		clone = pits.clone();
+		
+		isPlayerAsTurn = true;
+		lastStonePlaced = null;
+		undos = 0;
 	}
 	
-	public int[] getAData()
+	public int[] getBoardData()
 	{
-		return a;
-	}
-	
-	public int[] getBData()
-	{
-		return b;
+		return pits;
 	}
 	
 	/**
@@ -57,17 +55,46 @@ public class DataModel {
 	
 	public void undo()
 	{
-		undos = 0;
 		if (undos <= 3)
 		{
-			a = 
+			pits = clone;
+			undos++;
 		}
 	}
 	
-	public void move()
+	public boolean isMoveValid(int pitChosen)
 	{
-		a = a.clone();
-		b = b.clone();
+		if (pitChosen >= 1 && pitChosen <= 6)
+		{
+			if (isPlayerAsTurn)
+			{
+				return false;
+			}
+			return true;
+		}
+		else if (pitChosen >= 7 && pitChosen <= 12)
+		{
+			if (isPlayerAsTurn)
+			{
+				return true;
+			}
+			return false;
+		}
+	}
+	
+	public void move(int pitChosen)
+	{
+		if (isMoveValid(pitChosen))
+		{
+			clone = pits.clone();
+			int numStones = pits[pitChosen];
+			pits[pitChosen] = 0;
+			
+			for (int i = 1; i <= numStones; i++)
+			{
+				if ()
+			}
+		}
 	}
 	
 	public void captureOpposite(int lastStonePlaced)
@@ -76,7 +103,6 @@ public class DataModel {
 		{ 
 			pits[lastStonePlaced] = pits[lastStonePlaced + 6];
 			pits[lastStonePlaced + 6] = 0;
-			// test
 		}
 	}
 	
