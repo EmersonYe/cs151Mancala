@@ -17,7 +17,7 @@ public class DataModel {
 	private ArrayList<ChangeListener> listeners;
 	
 	private static final int MAX_UNDO = 3;
-	private static final int PLAYER_A_MANCALA = 13;
+	private static final int PLAYER_A_MANCALA = 7;
 	private static final int PLAYER_B_MANCALA = 0;
 	
 	
@@ -28,15 +28,28 @@ public class DataModel {
 	public DataModel(int initialStoneCount)
 	{
 		pits = new int[14];
-		for (int i = 1; i <= 12; i++) // 0th and 13th indeces are mancalas
+		for (int i = 1; i <= 13; i++) // 0th and 13th indeces are mancalas
 		{
-			pits[i] = initialStoneCount;
+			if (i != PLAYER_A_MANCALA)
+			{
+				pits[i] = initialStoneCount;
+			}
 		}
 		clone = pits.clone();
 		
 		isPlayerAsTurn = true;
-		lastStonePlaced = null;
+		lastStonePlaced = 0;
 		undos = 0;
+	}
+	
+	public String toString()
+	{
+		String pitData = "[" + pits[0];
+		for (int i = 1; i <= 13; i++)
+		{
+			pitData += ", " + pits[i];
+		}
+		return pitData + "]";
 	}
 	
 	public int[] getBoardData()
@@ -72,7 +85,7 @@ public class DataModel {
 			}
 			return true;
 		}
-		else if (pitChosen >= 7 && pitChosen <= 12)
+		else if (pitChosen >= 8 && pitChosen <= 13)
 		{
 			if (isPlayerAsTurn)
 			{
@@ -99,13 +112,26 @@ public class DataModel {
 	
 	public void captureOpposite(int lastStonePlaced)
 	{
-		if (lastStonePlaced >= 1 && lastStonePlaced <= 6) 
+		if (lastStonePlaced != PLAYER_A_MANCALA && lastStonePlaced != PLAYER_B_MANCALA) 
 		{ 
-			pits[lastStonePlaced] = pits[lastStonePlaced + 6];
-			pits[lastStonePlaced + 6] = 0;
+			pits[lastStonePlaced] += pits[14 - lastStonePlaced];
+			pits[14 - lastStonePlaced] = 0;
 		}
 	}
 	
-	
-	
+	public void captureAllStones()
+	{
+		int playerA = 0;
+		int playerB = 0;
+		for (int i = 1; i <= 6; i++)
+		{
+			playerA += pits[i];
+			pits[i] = 0;
+			playerB += pits[i + 7];
+			pits[i + 7] = 0;
+			
+		}
+		pits[PLAYER_A_MANCALA] += playerA;
+		pits[PLAYER_B_MANCALA] += playerB;
+	}
 }
