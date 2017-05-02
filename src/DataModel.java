@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+
+import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
@@ -10,7 +12,6 @@ import javax.swing.event.ChangeListener;
 public class DataModel {
 	
 	private boolean isPlayerAsTurn;
-	private int numStones;
 	private int[] pits;
 	private int[] clone;
 	private int undos;
@@ -29,18 +30,40 @@ public class DataModel {
 	public DataModel()
 	{
 		pits = new int[14];
-		for (int i = 1; i <= 13; i++) // 0th and 13th indeces are mancalas
-		{
-			if (i != PLAYER_A_MANCALA)
-			{
-				pits[i] = numStones;
-			}
-		}
+		
 		clone = pits.clone();
 		
 		isPlayerAsTurn = true;
 		lastStonePlaced = 0;
 		undos = 0;
+	}
+	
+	/**
+    Attach a listener to the Model
+    @param c the listener
+	 */
+	public void attach(ChangeListener c)
+	{
+		listeners.add(c);
+	}
+	
+	public void update()
+	{
+		for (ChangeListener c : listeners)
+		{
+			c.stateChanged(new ChangeEvent(this));
+		}
+	}
+	
+	public void setStones(int stones)
+	{
+		for (int i = 1; i <= 13; i++) // 0th and 13th indeces are mancalas
+		{
+			if (i != PLAYER_A_MANCALA)
+			{
+				pits[i] = stones;
+			}
+		}
 	}
 	
 	public String getTurn()
@@ -110,15 +133,6 @@ public class DataModel {
 	public int[] getBoardData()
 	{
 		return pits;
-	}
-	
-	/**
-    Attach a listener to the Model
-    @param c the listener
-	 */
-	public void attach(ChangeListener c)
-	{
-		listeners.add(c);
 	}
 	
 	public void undo()
