@@ -1,3 +1,5 @@
+package src;
+
 import java.util.ArrayList;
 import javax.swing.event.ChangeListener;
 
@@ -12,6 +14,7 @@ public class DataModel {
 	private boolean isPlayerAsTurn;
 	private int[] pits;
 	private int[] clone;
+	private int numStones;
 	private int undos;
 	private int lastStonePlaced;
 	private ArrayList<ChangeListener> listeners;
@@ -23,16 +26,15 @@ public class DataModel {
 	
 	/**
 	 * Create DataModel object with all pits filled with given number of stones
-	 * @param initialStoneCount number of stones to put in each pit
 	 */
-	public DataModel(int initialStoneCount)
+	public DataModel()
 	{
 		pits = new int[14];
 		for (int i = 1; i <= 13; i++) // 0th and 13th indeces are mancalas
 		{
 			if (i != PLAYER_A_MANCALA)
 			{
-				pits[i] = initialStoneCount;
+				pits[i] = numStones;
 			}
 		}
 		clone = pits.clone();
@@ -103,13 +105,15 @@ public class DataModel {
 			int numStones = pits[pitChosen];
 			pits[pitChosen] = 0;
 			
-			for (int i = 1; i <= numStones; i++)
+			/*for (int i = 1; i <= numStones; i++)
 			{
 				if ()
-			}
+			}*/
 		}
 	}
-	
+	public void setNumStones(int stones){
+		numStones = stones;
+	}
 	public void captureOpposite(int lastStonePlaced)
 	{
 		if (lastStonePlaced != PLAYER_A_MANCALA && lastStonePlaced != PLAYER_B_MANCALA) 

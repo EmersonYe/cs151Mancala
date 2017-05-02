@@ -1,13 +1,25 @@
-//testing emersonBranch
-public class Pit {
+package src;
 
-<<<<<<< HEAD
-}// /dsd slack integrate test
-//ddd
-=======
-}// /dsd slack integrate test test again
-<<<<<<< HEAD
->>>>>>> branch 'master' of https://github.com/EmersonYe/cs151Mancala
-=======
-//testing slack integration
->>>>>>> branch 'master' of https://github.com/EmersonYe/cs151Mancala
+import javax.swing.JComponent;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+
+public class Pit extends JComponent implements ChangeListener{
+
+	
+	
+	public Pit(DataModel model, MancalaFormatter format){
+		
+	
+	
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+}
+
