@@ -1,5 +1,6 @@
-import java.util.ArrayList;
+package src;
 
+import java.util.ArrayList;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -102,7 +103,7 @@ public class DataModel {
 		{
 			return true;
 		}
-		else if (!isPlayerAsTurn && pit >= 8 && pit < 13)
+		else if (!isPlayerAsTurn && pit >= 8 && pit <= 13)
 		{
 			return true;
 		}
@@ -146,6 +147,11 @@ public class DataModel {
 	
 	public boolean isMoveValid(int pitChosen)
 	{
+		if (pits[pitChosen] == 0)
+		{
+			System.out.println("This pit is empty");
+			return false;
+		}
 		if (pitChosen >= 1 && pitChosen <= 6)
 		{
 			if (isPlayerAsTurn)
@@ -190,7 +196,7 @@ public class DataModel {
 				}
 			}
 			lastStonePlaced = pit % 14;
-			if (pits[lastStonePlaced] == 1 && !isMancala(lastStonePlaced) 
+			if (pits[lastStonePlaced] == 1 && !isMancala(lastStonePlaced)
 					&& isOwnPit(lastStonePlaced))
 			{
 				captureOpposite(lastStonePlaced);
@@ -199,6 +205,7 @@ public class DataModel {
 			if (isGameOver())
 			{
 				captureAllStones();
+				getWinner();
 			}
 			else
 			{
@@ -244,19 +251,19 @@ public class DataModel {
 		return (playerAStones == 0 || playerBStones == 0);
 	}
 	
-	public String getWinner()
+	public void getWinner()
 	{
 		if (pits[PLAYER_A_MANCALA] > pits[PLAYER_B_MANCALA])
 		{
-			return "Player A wins!";
+			System.out.println("Player A wins!");
 		}
 		else if (pits[PLAYER_B_MANCALA] > pits[PLAYER_A_MANCALA])
 		{
-			return "Player B wins!";
+			System.out.println("Player B wins!");
 		}
 		else
 		{
-			return "It's a draw!";
+			System.out.println("It's a draw!");
 		}
 	}
 }
