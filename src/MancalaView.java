@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
@@ -33,6 +34,15 @@ public class MancalaView extends JPanel implements ChangeListener{
 		
 	public MancalaView (final DataModel board){
 		
+		// This is the frame for the game adding the game board panel
+		JFrame gameFrame = new JFrame("Mancala");
+		gameFrame.setLayout(new FlowLayout());
+		JPanel boardPanel = new JPanel();
+		boardPanel.setPreferredSize(new Dimension (1400,600));
+		boardPanel.setBorder(BorderFactory.createEtchedBorder());
+		gameFrame.add(boardPanel);
+		boardPanel.setLayout(new BorderLayout());
+		
 		// Frame for asking the number of stones user wants
 		JFrame openFrame2 = new JFrame("Welcome to the Mancala Game! Please choose the number of starting stones.");
 		openFrame2.setLayout(new FlowLayout());
@@ -42,7 +52,9 @@ public class MancalaView extends JPanel implements ChangeListener{
 				ActionListener()
 				{
 				public void actionPerformed(ActionEvent event){
-					board.setNumStones(threeStone);
+					board.setStones(threeStone);
+					gameFrame.pack();
+					gameFrame.setVisible(true);
 					openFrame2.dispose();
 				}});
 		JButton stone4 = new JButton("Four stones");
@@ -50,7 +62,9 @@ public class MancalaView extends JPanel implements ChangeListener{
 				ActionListener()
 				{
 				public void actionPerformed(ActionEvent event){
-					board.setNumStones(fourStone);
+					board.setStones(fourStone);
+					gameFrame.pack();
+					gameFrame.setVisible(true);
 					openFrame2.dispose();
 				}});
 		JPanel openPanel2 = new JPanel();
@@ -94,14 +108,6 @@ public class MancalaView extends JPanel implements ChangeListener{
 		openPanel1.add(style1);
 		openPanel1.add(style2);
 		
-		// This is the frame for the game adding the game board panel
-		JFrame gameFrame = new JFrame("Mancala");
-		gameFrame.setLayout(new FlowLayout());
-		JPanel boardPanel = new JPanel();
-		boardPanel.setPreferredSize(new Dimension (1400,600));
-		boardPanel.setBorder(BorderFactory.createEtchedBorder());
-		gameFrame.add(boardPanel);
-		boardPanel.setLayout(new BorderLayout());
 		
 		// Adding player A to game board
 		JLabel playerAL = new JLabel("Player A");
@@ -110,7 +116,6 @@ public class MancalaView extends JPanel implements ChangeListener{
 		playerAL.setFont(new Font("Arial", 5, 25));
 		playerAP.add(playerAL);
 		boardPanel.add(playerAP, BorderLayout.SOUTH);
-		gameFrame.pack();
 		
 		// Adding player B to game board
 		JLabel playerBL = new JLabel("Player B");
@@ -119,31 +124,77 @@ public class MancalaView extends JPanel implements ChangeListener{
 		playerBL.setFont(new Font("Arial", 5, 25));
 		playerBP.add(playerBL);
 		boardPanel.add(playerBP, BorderLayout.NORTH);
-		gameFrame.pack();
-		gameFrame.setVisible(true);
 		
-class VerticalText extends JFrame {
-	String text1;
-	public VerticalText(String text){
-		String text1 = text;
-	}
-	public void paint(Graphics g){
-		super.paint(g);
+		// Adding Mancala A to game board
+		DrawTextVertically mancalaAL = new DrawTextVertically("Mancala A");
+		JPanel mancalaAP = new JPanel();
+		mancalaAP.setLayout(new GridBagLayout());
+		mancalaAP.add(mancalaAL);
+		boardPanel.add(mancalaAP, BorderLayout.EAST);
 		
-		g.setFont(new Font("Arial", 5,25));
+		// Add Mancala B to game board
+		DrawTextVertically mancalaBL = new DrawTextVertically("Mancala B");
+		JPanel mancalaBP = new JPanel();
+		mancalaBP.setLayout(new GridBagLayout());
+		mancalaBP.add(mancalaBL);
+		boardPanel.add(mancalaBP, BorderLayout.WEST);
 		
-		Graphics2D g2d = (Graphics2D) g;
-		AffineTransform at = g2d.getTransform();
 		
-		AffineTransform me = new AffineTransform();
-		me.rotate(- Math.PI / 2);
-		g2d.setTransform(me);
-		g2d.drawString(text1, -200, 50);
-	}
-}
+		
+		JButton undoButton = new JButton("Undo move");
+		undoButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				board.undo();
+			}
+		});
+		
+		gameFrame.add(undoButton);
+		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+
 }
 
 	public void stateChanged(ChangeEvent e) {
 		super.repaint();
 		}
+	
+
+private class DrawTextVertically extends JLabel
+{
+	private String text;
+	private static final int width = 55;
+	private static final int height = 400;
+	private static final int offset = 15;
+
+	public DrawTextVertically(String text)
+	{
+		this.text = text;
 	}
+
+	public Dimension getPreferredSize()
+	{
+		return new Dimension(width, height);
+	}
+
+	protected void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+
+		setFont(new Font("Arial", 5, 25));
+		FontMetrics fontMetrics = g2.getFontMetrics();
+		int y = fontMetrics.getHeight();
+		for (int i = 0; i < text.length(); i++)
+		{
+			int x = offset + (fontMetrics.charWidth(text.charAt(i)) / 10);
+			g2.drawString(Character.toString(text.charAt(i)), x, y);
+
+			y = y + fontMetrics.getHeight();
+		}
+		g2.dispose();
+	}
+}
+
+}
+	
