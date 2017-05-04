@@ -18,6 +18,7 @@ public class DataModel {
 	private int AUndos;
 	private int BUndos;
 	private int lastStonePlaced;
+	private int prevLastStonePlaced;
 	private String errorMsg;
 	private String freeTurn;
 	private ArrayList<ChangeListener> listeners;
@@ -38,6 +39,7 @@ public class DataModel {
 		isPlayerAsTurn = true;
 		canUndo = false;
 		lastStonePlaced = 0;
+		prevLastStonePlaced = lastStonePlaced;
 		errorMsg= "";
 		freeTurn = "";
 		AUndos = 0;
@@ -70,11 +72,15 @@ public class DataModel {
 	 */
 	public void setStones(int stones)
 	{
-		for (int i = 0; i < 13; i++) // 0th and 13th indeces are mancalas
+		for (int i = 0; i <= 13; i++)
 		{
-			if (i != PLAYER_A_MANCALA )
+			if (i != PLAYER_A_MANCALA && i != PLAYER_B_MANCALA)
 			{
 				pits[i] = stones;
+			}
+			else
+			{
+				pits[i] = 0;
 			}
 		}
 		this.update();
@@ -94,18 +100,36 @@ public class DataModel {
 		return "Player B";
 	}
 	
+	/**
+	 * Accessor
+	 * Gets the error message that the player made
+	 * @return the error the current player made
+	 */
 	public String getErrorMsg(){
 		return errorMsg;
 	}
 	
-	public String getFreeTurn(){
+	/**
+	 * Accessor
+	 * Gets the free turn status of the current player
+	 * @return the free turn status of the current player
+	 */
+	public String getFreeTurn()
+	{
 		return freeTurn;
 	}
-	public int getPlayerAUndo(){
-		return Math.abs(3-AUndos);
+	
+	/**
+	 * Gets the number of undos of the player A
+	 * @return
+	 */
+	public int getPlayerAUndo()
+	{
+		return 3 - AUndos; // Makes it backwards (more readable for user)
 	}
-	public int getPlayerBUndo(){
-		return Math.abs(3-BUndos);
+	public int getPlayerBUndo()
+	{
+		return 3 - BUndos; // Makes it backwards (more readable for user)
 	}
 
 	/**
@@ -237,24 +261,6 @@ public class DataModel {
 			}
 		}
 		this.update();
-
-		/*{
-			if (this.getTurn() == "Player A" && BUndos <MAX_UNDO)
-			{
-				pits = clone;
-				BUndos++;
-				AUndos = 0;
-				isPlayerAsTurn = false;
-			}
-			else if(AUndos <MAX_UNDO)
-			{
-				pits = clone;
-				AUndos++;
-				BUndos = 0;
-				isPlayerAsTurn = true;
-			}
-			this.update();
-		}*/
 	}
 
 	/**
