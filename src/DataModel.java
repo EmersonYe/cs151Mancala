@@ -180,21 +180,54 @@ public class DataModel {
 	 */
 	public void undo()
 	{
-		if (this.getTurn() == "Player A" && BUndos <MAX_UNDO)
+		setTurn();
+		if (isPlayerAsTurn)
 		{
-			pits = clone;
-			BUndos++;
-			AUndos = 0;
-			isPlayerAsTurn = false;
+			if (AUndos < MAX_UNDO)
+			{
+				pits = clone;
+				AUndos++;
+				BUndos = 0;
+			}
+			else
+			{
+				System.out.println("Can't undo, Player B has to move!");
+				isPlayerAsTurn = !isPlayerAsTurn;
+			}
 		}
-		else if(AUndos <MAX_UNDO)
+		else
 		{
-			pits = clone;
-			AUndos++;
-			BUndos = 0;
-			isPlayerAsTurn = true;
+			if (BUndos < MAX_UNDO)
+			{
+				pits = clone;
+				BUndos++;
+				AUndos = 0;
+			}
+			else
+			{
+				System.out.println("Can't undo, Player A has to move!");
+				isPlayerAsTurn = !isPlayerAsTurn;
+			}
 		}
 		this.update();
+		
+		/*{
+			if (this.getTurn() == "Player A" && BUndos <MAX_UNDO)
+			{
+				pits = clone;
+				BUndos++;
+				AUndos = 0;
+				isPlayerAsTurn = false;
+			}
+			else if(AUndos <MAX_UNDO)
+			{
+				pits = clone;
+				AUndos++;
+				BUndos = 0;
+				isPlayerAsTurn = true;
+			}
+			this.update();
+		}*/
 	}
 	
 	/**
