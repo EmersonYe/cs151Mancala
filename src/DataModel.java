@@ -19,6 +19,7 @@ public class DataModel {
 	private int BUndos;
 	private int lastStonePlaced;
 	private String errorMsg;
+	private String freeTurn;
 	private ArrayList<ChangeListener> listeners;
 
 	private static final int MAX_UNDO = 3;
@@ -38,6 +39,7 @@ public class DataModel {
 		canUndo = false;
 		lastStonePlaced = 0;
 		errorMsg= "";
+		freeTurn = "";
 		AUndos = 0;
 		BUndos = 0;
 	}
@@ -94,6 +96,10 @@ public class DataModel {
 	
 	public String getErrorMsg(){
 		return errorMsg;
+	}
+	
+	public String getFreeTurn(){
+		return freeTurn;
 	}
 
 	/**
@@ -249,6 +255,7 @@ public class DataModel {
 	 */
 	public boolean isMoveValid(int pitChosen)
 	{
+		freeTurn = "";
 		if (pits[pitChosen] == 0 && !isMancala(pitChosen))
 		{
 			errorMsg = "This pit is empty";
@@ -289,6 +296,7 @@ public class DataModel {
 		if (isMoveValid(pit))
 		{
 			errorMsg = "";
+			freeTurn = "";
 			clone = pits.clone();
 			int numStones = pits[pit];
 			pits[pit] = 0;
@@ -307,6 +315,9 @@ public class DataModel {
 				}
 			}
 			lastStonePlaced = pit % 14;
+			if(isMancala(lastStonePlaced)){
+				freeTurn = "Congratulations! You get a free turn!";
+			}
 			if (pits[lastStonePlaced] == 1 && !isMancala(lastStonePlaced)
 					&& isOwnPit(lastStonePlaced)) // lands on an empty pit
 			{

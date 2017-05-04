@@ -123,10 +123,17 @@ public class Pit extends JComponent implements ChangeListener
 		g2.setFont(new Font("Arial", 3, 30));
 		FontMetrics fontMetrics = g.getFontMetrics();
 		if (model.isGameOver() == false){
+		if(model.getFreeTurn() !=""){
+			g2.setColor(Color.ORANGE);
+			g2.drawString(model.getFreeTurn(), this.getX()-75 + this.getWidth() / 2
+					- fontMetrics.stringWidth("" + stones) / 2, this.getY()+55
+					+ this.getHeight() / 2 - fontMetrics.getAscent()
+					- LOCATION_OFFSET);
+		}
 		if (model.getErrorMsg() != ""){
 			g2.setColor(Color.BLACK);
 			g2.drawString("*Error: " + model.getErrorMsg() + "*", this.getX()-75 + this.getWidth() / 2
-					- fontMetrics.stringWidth("" + stones) / 2, this.getY()+75
+					- fontMetrics.stringWidth("" + stones) / 2, this.getY()+55
 					+ this.getHeight() / 2 - fontMetrics.getAscent()
 					- LOCATION_OFFSET);
 		}
