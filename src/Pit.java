@@ -15,7 +15,7 @@ import javax.swing.event.ChangeListener;
 
 /**
  * This class creates a component and then paints the Mancala shapes on it.
- *   @author Team SJSD - Karl Lapuz, Matt Sternquist, Emerson Ye
+ * @author Team SJSD - Karl Lapuz, Matt Sternquist, Emerson Ye
  * 
  */
 public class Pit extends JComponent implements ChangeListener
@@ -28,8 +28,8 @@ public class Pit extends JComponent implements ChangeListener
 	
 	/**
 	 * Constructs a Mancala component.
-	 * @param model the given model
-	 * @param formatter the given style formatter
+	 * @param model the given DataModel
+	 * @param formatter the given style MancalaFormatter
 	 */
 	public Pit(final DataModel model, MancalaFormatter formatter)
 	{
@@ -121,7 +121,7 @@ public class Pit extends JComponent implements ChangeListener
 		}
 
 		g2.setColor(Color.RED);
-		g2.setFont(new Font("Verdana", 3, 30));
+		g2.setFont(new Font("Arial", 3, 30));
 		FontMetrics fontMetrics = g.getFontMetrics();
 		if (model.isGameOver() == false){
 		if (model.getTurn().equals("Player A"))

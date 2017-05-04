@@ -11,8 +11,7 @@ import java.awt.geom.Point2D;
 
 /**
  * This class creates the shapes of the Mancala.
- *  * @author Team SJSD - Karl Lapuz, Matt Sternquist, Emerson Ye
- *
+ * @author Team SJSD - Karl Lapuz, Matt Sternquist, Emerson Ye
  */
 public class MancalaShape
 {
