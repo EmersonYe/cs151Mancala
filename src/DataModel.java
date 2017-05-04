@@ -197,12 +197,13 @@ public class DataModel {
 	}
 
 	/**
-	 * Undoes a move of the current player
+	 * Undos a move of the current player
 	 */
 	public void undo()
 	{
 		if (canUndo)
 		{
+			freeTurn = "";
 			setTurn();
 			if (isPlayerAsTurn)
 			{

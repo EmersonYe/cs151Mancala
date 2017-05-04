@@ -178,7 +178,15 @@ public class MancalaView extends JPanel implements ChangeListener{
 			}
 		});
 		
+		JButton resetButton = new JButton("Reset Game");
+		resetButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				openFrame2.pack();
+				openFrame2.setVisible(true);
+			}
+		});
 		
+		gameFrame.add(resetButton);
 		gameFrame.add(undoButton);
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
