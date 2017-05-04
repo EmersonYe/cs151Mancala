@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
@@ -20,10 +19,10 @@ public class MancalaShape
     private int width;
     private int height;
     private Shape shape;
-    private int numberOfStones;
+    private int numStones;
     private Color pitColor;
     private Color stoneColor;
-    private static final int STONE_SIZE = 20;
+    private static final int stoneSize = 20;
     
     /**
      * Constructs a Mancala component shape.
@@ -42,11 +41,16 @@ public class MancalaShape
         this.width = width;
         this.pitColor = pitColor;
         this.stoneColor = stoneColor;
-        numberOfStones = 0;
+        numStones = 0;
         shape = null;
     }
+    
+    /**
+     * Gets the stones of the shape.
+     * @return the numStone
+     */
     public int getNumStone(){
-    	return numberOfStones;
+    	return numStones;
     }
     /**
      * Gets the x of the shape.
@@ -88,9 +92,9 @@ public class MancalaShape
      * Sets the number of the stones.
      * @param number the given number
      */
-    public void setNumberOfStones(int number)
+    public void setNumStones(int number)
     {
-        numberOfStones = number;
+        numStones = number;
     }
     
     /**
@@ -103,43 +107,6 @@ public class MancalaShape
     }
     
     /**
-     * Paints the shape.
-     * @param g2 the graphics
-     */
-    public void paintComponentShape(Graphics2D g2)
-    {	
-        g2.setColor(pitColor);
-        g2.fill(shape);
-        g2.setColor(Color.BLACK);
-        g2.draw(shape);
-       
-        double radius = Math.min(this.height, this.width) / 4.0;
-        
-        if (numberOfStones > 0)
-        {
-             g2.setColor(Color.WHITE);
-             FontMetrics fontMetrics = g2.getFontMetrics();
-             g2.setFont(new Font("Arial", Font.BOLD, 20));
-
-             
-             g2.drawString("" + numberOfStones, this.x + width/2 - fontMetrics.stringWidth(""+numberOfStones) / 2, this.y + height/2 + fontMetrics.getDescent() / 2);
-        }
-        for(int i = 0; i < numberOfStones; i++)
-        {
-            double angle = (2 * Math.PI) / numberOfStones * (i + 1);
-            double aX = this.x + width / 2 + Math.cos(angle) * radius - radius / 2.0;
-            double aY = this.y + height / 2 + Math.sin(angle) * radius - radius / 2.0;    
-           
-            Ellipse2D.Double stone = new Ellipse2D.Double(aX, aY, STONE_SIZE, STONE_SIZE);
-           
-            g2.setPaint(stoneColor);
-            g2.fill(stone);
-            g2.setColor(Color.BLACK);
-            g2.draw(stone);
-        }
-    }
-
-    /**
      * CHecks if a point is in the shape.
      * @param aPoint the point
      * @return false if the point is not in the shape, otherwise true
@@ -151,4 +118,42 @@ public class MancalaShape
         else
             return true;
     }
+    
+    /**
+     * Paints the shape.
+     * @param g2 the graphics
+     */
+    public void paintShape(Graphics2D g2)
+    {	
+        g2.setColor(pitColor);
+        g2.fill(shape);
+        g2.setColor(Color.BLACK);
+        g2.draw(shape);
+       
+        double radius = Math.min(this.height, this.width) / 4.0;
+        
+        if (numStones > 0)
+        {
+             g2.setColor(Color.WHITE);
+             FontMetrics metrics = g2.getFontMetrics();
+             g2.setFont(new Font("Arial", Font.BOLD, 20));
+
+             
+             g2.drawString("" + numStones, this.x + width/2 - metrics.stringWidth(""+numStones) / 2, this.y + height/2 + metrics.getDescent() / 2);
+        }
+        for(int i = 0; i < numStones; i++)
+        {
+            double angle = (2 * Math.PI) / numStones * (i + 1);
+            double aX = this.x + width / 2 + Math.cos(angle) * radius - radius / 2.0;
+            double aY = this.y + height / 2 + Math.sin(angle) * radius - radius / 2.0;    
+           
+            Ellipse2D.Double stone = new Ellipse2D.Double(aX, aY, stoneSize, stoneSize);
+           
+            g2.setPaint(stoneColor);
+            g2.fill(stone);
+            g2.setColor(Color.BLACK);
+            g2.draw(stone);
+        }
+    }
+
 }

@@ -24,7 +24,7 @@ public class BoardStyle2 implements MancalaFormatter{
 
 
 	public Color setStoneColor() {
-		return Color.BLUE;
+		return Color.BLACK;
 	}
 
 }

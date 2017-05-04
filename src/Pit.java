@@ -82,25 +82,25 @@ public class Pit extends JComponent implements ChangeListener
 			{
 				pits.add(new MancalaShape((i + 1) * X, topY+55, WIDTH, MANCALA_HEIGHT, pitColor, stoneColor));
 				pits.get(i).setShape(formatter.setMancalaShape(pits.get(i)));
-				pits.get(i).setNumberOfStones(stones[i]);
+				pits.get(i).setNumStones(stones[i]);
 			}
 			else if (i >= 0 && i < MANCALA_A_INDEX)
 			{
 				pits.add(new MancalaShape((i + 1) * X, bottomY, WIDTH, HEIGHT, pitColor, stoneColor));
 				pits.get(i).setShape(formatter.setPitShape(pits.get(i)));
-				pits.get(i).setNumberOfStones(stones[i]);
+				pits.get(i).setNumStones(stones[i]);
 			}
 			else if (i == MANCALA_B_INDEX)
 			{
 				pits.add(new MancalaShape(MANCALA_B_X, topY+55, WIDTH, MANCALA_HEIGHT, pitColor, stoneColor));
 				pits.get(i).setShape(formatter.setMancalaShape(pits.get(i)));
-				pits.get(i).setNumberOfStones(stones[i]);
+				pits.get(i).setNumStones(stones[i]);
 			}
 			else
 			{
 				pits.add(new MancalaShape(n * X, topY, WIDTH, HEIGHT, pitColor, stoneColor));
 				pits.get(i).setShape(formatter.setPitShape(pits.get(i)));
-				pits.get(i).setNumberOfStones(stones[i]);
+				pits.get(i).setNumStones(stones[i]);
 				n--;
 			}
 		}
@@ -117,7 +117,7 @@ public class Pit extends JComponent implements ChangeListener
 
 		for (MancalaShape p : pits)
 		{
-			p.paintComponentShape(g2);
+			p.paintShape(g2);
 		}
 
 		g2.setColor(Color.RED);
@@ -157,7 +157,7 @@ public class Pit extends JComponent implements ChangeListener
 
 		for (int i = 0; i < pits.size(); i++)
 		{
-			pits.get(i).setNumberOfStones(stones[i]);
+			pits.get(i).setNumStones(stones[i]);
 		}
 
 		repaint();
