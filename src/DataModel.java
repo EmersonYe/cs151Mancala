@@ -5,18 +5,17 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- * Holds information about pits and how many stones/pit
- * 4/11/17
- * @author emersonye, Karl Lapuz, Matthew Sternquist
- *
+ * Holds information about pits, how to manipulate them,
+ * and other move functionalities of the game
+ * @author Team SJSD - Karl Lapuz, Matt Sternquist, Emerson Ye
  */
 public class DataModel {
 	
 	private boolean isPlayerAsTurn;
 	private int[] pits;
 	private int[] clone;
-	private int playerAundos;
-	private int playerBundos;
+	private int AUndos;
+	private int BUndos;
 	private int lastStonePlaced;
 	private ArrayList<ChangeListener> listeners;
 	
@@ -26,29 +25,32 @@ public class DataModel {
 	
 	
 	/**
-	 * Create DataModel object with all pits filled with given number of stones
-	 * @param initialStoneCount number of stones to put in each pit
+	 * Create DataModel object with all pits with 0 as initial number of stones
 	 */
 	public DataModel()
 	{
 		pits = new int[14];
-		clone = new int[14];
 		listeners = new ArrayList<ChangeListener>();
+		clone = pits.clone(); // utilized for undo function
 		isPlayerAsTurn = true;
 		lastStonePlaced = 0;
-		playerAundos = 0;
-		playerBundos= 0;
+
+		AUndos = 0;
+		BUndos = 0;
 	}
 	
 	/**
-    Attach a listener to the Model
-    @param c the listener
+     * Attach a listener to the Model
+     * @param c the listener
 	 */
 	public void attach(ChangeListener c)
 	{
 		listeners.add(c);
 	}
 	
+	/**
+	 * Updates the listener with the changes in the data made by user
+	 */
 	public void update()
 	{
 		for (ChangeListener c : listeners)
@@ -57,6 +59,10 @@ public class DataModel {
 		}
 	}
 	
+	/**
+	 * Sets the number of stones inside the pits
+	 * @param stones the number of stones inside the pits
+	 */
 	public void setStones(int stones)
 	{
 		for (int i = 0; i < 13; i++) // 0th and 13th indeces are mancalas
@@ -69,6 +75,11 @@ public class DataModel {
 		this.update();
 	}
 	
+	/**
+	 * Accessor
+	 * Gets the current player turn
+	 * @return the name of the player that gets the next turn
+	 */
 	public String getTurn()
 	{
 		if (isPlayerAsTurn)
@@ -78,7 +89,10 @@ public class DataModel {
 		return "Player B";
 	}
 	
-	public void setTurn()
+	/**
+	 * Sets the next turn based on the move made
+	 */
+	private void setTurn()
 	{
 		if (lastStonePlaced == PLAYER_A_MANCALA && isPlayerAsTurn)
 		{
@@ -94,12 +108,22 @@ public class DataModel {
 		}
 	}
 	
-	public boolean isMancala(int pit)
+	/**
+	 * Determines whether the pit is a mancala or not
+	 * @param pit the pit chose
+	 * @return true if it is mancala and false otherwise
+	 */
+	private boolean isMancala(int pit)
 	{
 		return (pit == PLAYER_A_MANCALA || pit == PLAYER_B_MANCALA);
 	}
 	
-	public boolean isOwnPit(int pit)
+	/**
+	 * Determines whether the pit is the current player's own pit
+	 * @param pit the pit chosen
+	 * @return true if the the put is the current player's pit, false otherwise
+	 */
+	private boolean isOwnPit(int pit)
 	{
 		if (isPlayerAsTurn && pit >= 1 && pit < 7)
 		{
@@ -112,11 +136,20 @@ public class DataModel {
 		return false;
 	}
 	
+	/**
+	 * Gets the pit where the last stone was placed
+	 * @return the int 
+	 */
 	public int getLastStonePlacement()
 	{
 		return lastStonePlaced;
 	}
 	
+	/**
+	 * Override
+	 * Prints the current state of the game in board format
+	 * @return the state of the game in the form where it's readable for the user
+	 */
 	public String toString()
 	{
 		String pitData = "";
@@ -133,30 +166,42 @@ public class DataModel {
 		return pitData;
 	}
 	
+	/**
+	 * Gets the data of the board
+	 * @return the array of ints representing the state of game
+	 */
 	public int[] getBoardData()
 	{
 		return pits;
 	}
 	
+	/**
+	 * Undoes a move of the current player
+	 */
 	public void undo()
 	{
-		if (this.getTurn() == "Player A" && playerBundos <MAX_UNDO)
+		if (this.getTurn() == "Player A" && BUndos <MAX_UNDO)
 		{
 			pits = clone;
-			playerBundos++;
-			playerAundos = 0;
+			BUndos++;
+			AUndos = 0;
 			isPlayerAsTurn = false;
 		}
-		else if(playerAundos <MAX_UNDO)
+		else if(AUndos <MAX_UNDO)
 		{
 			pits = clone;
-			playerAundos++;
-			playerBundos = 0;
+			AUndos++;
+			BUndos = 0;
 			isPlayerAsTurn = true;
 		}
 		this.update();
 	}
 	
+	/**
+	 * Determines whether the pit chosen is a valid option for the current player
+	 * @param pitChosen the pit chosen by the current player
+	 * @return true if the pit is accessible for current player
+	 */
 	public boolean isMoveValid(int pitChosen)
 	{
 		if (pits[pitChosen] == 0 && !isMancala(pitChosen))
@@ -186,6 +231,10 @@ public class DataModel {
 		return false;
 	}
 	
+	/**
+	 * Makes a move
+	 * @param pit the pit that the current player would like to access
+	 */
 	public void move(int pit)
 	{
 		if (isMoveValid(pit))
@@ -209,7 +258,7 @@ public class DataModel {
 			}
 			lastStonePlaced = pit % 14;
 			if (pits[lastStonePlaced] == 1 && !isMancala(lastStonePlaced)
-					&& isOwnPit(lastStonePlaced))
+					&& isOwnPit(lastStonePlaced)) // lands on an empty pit
 			{
 				captureOpposite(lastStonePlaced);
 			}
@@ -219,15 +268,16 @@ public class DataModel {
 				captureAllStones();
 				getWinner();
 			}
-			else
-			{
-				setTurn();
-			}
+			setTurn();
 		}
 		this.update();
 	}
 	
-	public void captureOpposite(int lastStonePlaced)
+	/**
+	 * Helper method that captures the opposite when player lands on an own empty pit
+	 * @param lastStonePlaced where the last stone was placed
+	 */
+	private void captureOpposite(int lastStonePlaced)
 	{
 		if (lastStonePlaced != PLAYER_A_MANCALA && lastStonePlaced != PLAYER_B_MANCALA) 
 		{ 
@@ -242,7 +292,10 @@ public class DataModel {
 		}
 	}
 	
-	public void captureAllStones()
+	/**
+	 * Captures all stone and puts them all in the players' respective mancala
+	 */
+	private void captureAllStones()
 	{
 		int playerA = 0;
 		int playerB = 0;
@@ -258,7 +311,11 @@ public class DataModel {
 		pits[PLAYER_B_MANCALA] += playerB;
 	}
 	
-	public boolean isGameOver()
+	/**
+	 * Determines whether the game is over
+	 * @return true if the game is over, false otherwise
+	 */
+	boolean isGameOver()
 	{
 		int playerAStones = 0;
 		int playerBStones = 0;
@@ -270,6 +327,9 @@ public class DataModel {
 		return (playerAStones == 0 || playerBStones == 0);
 	}
 	
+	/**
+	 * Gets the winner of the game by comparing stones inside mancalas
+	 */
 	public String getWinner()
 	{
 		if (pits[PLAYER_A_MANCALA] > pits[PLAYER_B_MANCALA])
