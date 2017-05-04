@@ -4,9 +4,9 @@ import javax.swing.JFrame;
 public class MancalaTester {
 	public static void main(String[] args)
 	{
-		DataModel dataModel = new DataModel();
+		DataModel model = new DataModel();
 		
-		MancalaView view = new MancalaView(dataModel);
+		MancalaView view = new MancalaView(model);
 		
 	
 	}

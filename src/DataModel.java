@@ -7,7 +7,7 @@ import javax.swing.event.ChangeListener;
 /**
  * Holds information about pits and how many stones/pit
  * 4/11/17
- * @author emersonye, Karl Lapuz
+ * @author emersonye, Karl Lapuz, Matthew Sternquist
  *
  */
 public class DataModel {
@@ -15,13 +15,14 @@ public class DataModel {
 	private boolean isPlayerAsTurn;
 	private int[] pits;
 	private int[] clone;
-	private int undos;
+	private int playerAundos;
+	private int playerBundos;
 	private int lastStonePlaced;
 	private ArrayList<ChangeListener> listeners;
 	
 	private static final int MAX_UNDO = 3;
-	private static final int PLAYER_A_MANCALA = 7;
-	private static final int PLAYER_B_MANCALA = 0;
+	private static final int PLAYER_A_MANCALA = 6;
+	private static final int PLAYER_B_MANCALA = 13;
 	
 	
 	/**
@@ -31,12 +32,12 @@ public class DataModel {
 	public DataModel()
 	{
 		pits = new int[14];
-		
-		clone = pits.clone();
-		
+		clone = new int[14];
+		listeners = new ArrayList<ChangeListener>();
 		isPlayerAsTurn = true;
 		lastStonePlaced = 0;
-		undos = 0;
+		playerAundos = 0;
+		playerBundos= 0;
 	}
 	
 	/**
@@ -58,13 +59,14 @@ public class DataModel {
 	
 	public void setStones(int stones)
 	{
-		for (int i = 1; i <= 13; i++) // 0th and 13th indeces are mancalas
+		for (int i = 0; i < 13; i++) // 0th and 13th indeces are mancalas
 		{
-			if (i != PLAYER_A_MANCALA)
+			if (i != PLAYER_A_MANCALA )
 			{
 				pits[i] = stones;
 			}
 		}
+		this.update();
 	}
 	
 	public String getTurn()
@@ -138,21 +140,31 @@ public class DataModel {
 	
 	public void undo()
 	{
-		if (undos <= 3)
+		if (this.getTurn() == "Player A" && playerBundos <MAX_UNDO)
 		{
 			pits = clone;
-			undos++;
+			playerBundos++;
+			playerAundos = 0;
+			isPlayerAsTurn = false;
 		}
+		else if(playerAundos <MAX_UNDO)
+		{
+			pits = clone;
+			playerAundos++;
+			playerBundos = 0;
+			isPlayerAsTurn = true;
+		}
+		this.update();
 	}
 	
 	public boolean isMoveValid(int pitChosen)
 	{
-		if (pits[pitChosen] == 0)
+		if (pits[pitChosen] == 0 && !isMancala(pitChosen))
 		{
 			System.out.println("This pit is empty");
 			return false;
 		}
-		if (pitChosen >= 1 && pitChosen <= 6)
+		else if (pitChosen >= 0 && pitChosen < 6)
 		{
 			if (isPlayerAsTurn)
 			{
@@ -161,7 +173,7 @@ public class DataModel {
 			System.out.println("Can't access that pit");
 			return false;
 		}
-		else if (pitChosen >= 8 && pitChosen <= 13)
+		else if (pitChosen >= 7 && pitChosen < 13)
 		{
 			if (isPlayerAsTurn)
 			{
@@ -212,14 +224,22 @@ public class DataModel {
 				setTurn();
 			}
 		}
+		System.out.println(lastStonePlaced);
+		this.update();
 	}
 	
 	public void captureOpposite(int lastStonePlaced)
 	{
 		if (lastStonePlaced != PLAYER_A_MANCALA && lastStonePlaced != PLAYER_B_MANCALA) 
 		{ 
-			pits[lastStonePlaced] += pits[14 - lastStonePlaced];
-			pits[14 - lastStonePlaced] = 0;
+			if (pits[lastStonePlaced] >=0 && pits[lastStonePlaced] <6 ){
+				pits[lastStonePlaced] += pits[12 - lastStonePlaced];
+				pits[12 - lastStonePlaced] = 0;
+			}
+			else{
+				pits[lastStonePlaced] += pits[Math.abs(lastStonePlaced - 12)];
+				pits[Math.abs(lastStonePlaced - 12)] = 0;
+			}
 		}
 	}
 	
@@ -227,7 +247,7 @@ public class DataModel {
 	{
 		int playerA = 0;
 		int playerB = 0;
-		for (int i = 1; i <= 6; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			playerA += pits[i];
 			pits[i] = 0;
@@ -243,7 +263,7 @@ public class DataModel {
 	{
 		int playerAStones = 0;
 		int playerBStones = 0;
-		for (int i = 1; i <= 6; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			playerAStones += pits[i];
 			playerBStones += pits[i + 7];
@@ -251,19 +271,19 @@ public class DataModel {
 		return (playerAStones == 0 || playerBStones == 0);
 	}
 	
-	public void getWinner()
+	public String getWinner()
 	{
 		if (pits[PLAYER_A_MANCALA] > pits[PLAYER_B_MANCALA])
 		{
-			System.out.println("Player A wins!");
+			return "Player A is the winner!";
 		}
 		else if (pits[PLAYER_B_MANCALA] > pits[PLAYER_A_MANCALA])
 		{
-			System.out.println("Player B wins!");
+			return "Player B is the winner!";
 		}
 		else
 		{
-			System.out.println("It's a draw!");
+			return "It's a draw!";
 		}
 	}
 }

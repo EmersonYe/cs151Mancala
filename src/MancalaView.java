@@ -1,6 +1,7 @@
 package src;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -10,8 +11,6 @@ import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -22,18 +21,22 @@ import javax.swing.event.ChangeListener;
 
 
 public class MancalaView extends JPanel implements ChangeListener{
+	
 		private static final int threeStone = 3;
 		private static final int fourStone = 4;
 		public static final int boardWidth = 1400;
 		public static final int boardHeight = 600;
 		public static final int frameWidth = 1400;
 		public static final int Width = 1400;
+		private String ans;
 		private DataModel board;
 		private Pit pit;
 		
 		
 	public MancalaView (final DataModel board){
 		
+		this.board = board;
+
 		// This is the frame for the game adding the game board panel
 		JFrame gameFrame = new JFrame("Mancala");
 		gameFrame.setLayout(new FlowLayout());
@@ -77,22 +80,27 @@ public class MancalaView extends JPanel implements ChangeListener{
 		// Frame for asking which style user wants
 		JFrame openFrame1 = new JFrame("Welcome to the Mancala Game! Please choose a board style.");
 		
+		JPanel aLabelPanel = new JPanel();
+		
 		JButton style1 = new JButton("Style 1");
 		style1.addActionListener(new
 				ActionListener()
 				{
 				public void actionPerformed(ActionEvent event){
+					ans = "Style 1";
 					pit = new Pit(board, new BoardStyle1());
+					aLabelPanel.add(pit, BorderLayout.CENTER);
 					openFrame1.dispose();
 					openFrame2.pack();
 					openFrame2.setVisible(true);
 				}});
 		JButton style2 = new JButton("Style 2");
-		style1.addActionListener(new
+		style2.addActionListener(new
 				ActionListener()
 				{
 				public void actionPerformed(ActionEvent event){
 					pit = new Pit(board, new BoardStyle2());
+					aLabelPanel.add(pit, BorderLayout.CENTER);
 					openFrame1.dispose();
 					openFrame2.pack();
 					openFrame2.setVisible(true);
@@ -139,6 +147,27 @@ public class MancalaView extends JPanel implements ChangeListener{
 		mancalaBP.add(mancalaBL);
 		boardPanel.add(mancalaBP, BorderLayout.WEST);
 		
+		// Labeling player A pits and adding borderline
+		aLabelPanel.setPreferredSize(new Dimension(900,600));
+		aLabelPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 5, true));
+		boardPanel.add(aLabelPanel, BorderLayout.CENTER);
+		aLabelPanel.setLayout(new BorderLayout());
+		JLabel pitALabel = new JLabel( "A6                  A5                 A4                  A3                    A2                   A1");
+		JPanel pitAPanel = new JPanel();
+		pitAPanel.setLayout(new FlowLayout());
+		pitALabel.setFont(new Font("Arial",5, 25));
+		pitAPanel.add(pitALabel);
+		aLabelPanel.add(pitAPanel, BorderLayout.SOUTH);
+		
+		// Labeling player B pits
+		JLabel pitBLabel = new JLabel( "B6                  B5                 B4                  B3                    B2                   B1");
+		JPanel pitBPanel = new JPanel();
+		pitBPanel.setLayout(new FlowLayout());
+		pitBLabel.setFont(new Font("Arial",5, 25));
+		pitBPanel.add(pitBLabel);
+		aLabelPanel.add(pitBPanel, BorderLayout.NORTH);
+		
+		board.attach(this);
 		
 		
 		JButton undoButton = new JButton("Undo move");
@@ -148,23 +177,24 @@ public class MancalaView extends JPanel implements ChangeListener{
 			}
 		});
 		
+		
 		gameFrame.add(undoButton);
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		
 
-}
+	}
 
 	public void stateChanged(ChangeEvent e) {
 		super.repaint();
 		}
 	
-
+	// Class to draw text vertically
 private class DrawTextVertically extends JLabel
 {
 	private String text;
 	private static final int width = 55;
-	private static final int height = 400;
+	private static final int height = 300;
 	private static final int offset = 15;
 
 	public DrawTextVertically(String text)
