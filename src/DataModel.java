@@ -116,10 +116,12 @@ public class DataModel {
 		if (lastStonePlaced == PLAYER_A_MANCALA && isPlayerAsTurn)
 		{
 			isPlayerAsTurn = true;
+			AUndos = 0;
 		}
 		else if (lastStonePlaced == PLAYER_B_MANCALA && !isPlayerAsTurn)
 		{
 			isPlayerAsTurn = false;
+			BUndos = 0;
 		}
 		else
 		{
@@ -268,7 +270,7 @@ public class DataModel {
 			System.out.println("This pit is empty");
 			return false;
 		}
-		else if (pitChosen >= 0 && pitChosen < 6)
+		if (pitChosen >= 0 && pitChosen < 6)
 		{
 			if (isPlayerAsTurn)
 			{
@@ -309,7 +311,7 @@ public class DataModel {
 
 			for (int i = 1; i <= numStones; i++)
 			{
-				pit++;
+				pit = (pit + 1) % 14;
 				if (pit == PLAYER_A_MANCALA && !isPlayerAsTurn || pit == PLAYER_B_MANCALA
 						&& isPlayerAsTurn)
 				{
