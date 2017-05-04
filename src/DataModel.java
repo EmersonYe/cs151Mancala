@@ -45,6 +45,24 @@ public class DataModel {
 		AUndos = 0;
 		BUndos = 0;
 	}
+	
+	/**
+	 * Resets the game
+	 */
+	public void reset(int stones)
+	{
+		pits = new int[14];
+		setStones(stones);
+		clone = pits.clone(); 
+		isPlayerAsTurn = true;
+		canUndo = false;
+		lastStonePlaced = 0;
+		prevLastStonePlaced = lastStonePlaced;
+		errorMsg= "";
+		freeTurn = "";
+		AUndos = 0;
+		BUndos = 0;
+	}
 
 	/**
 	 * Attach a listener to the Model
@@ -78,11 +96,7 @@ public class DataModel {
 			{
 				pits[i] = stones;
 			}
-			else
-			{
-				pits[i] = 0;
-			}
-		}
+		}		
 		this.update();
 	}
 
@@ -120,13 +134,18 @@ public class DataModel {
 	}
 	
 	/**
-	 * Gets the number of undos of the player A
-	 * @return
+	 * Gets the number of undos of player A
+	 * @return the number of undos of player A
 	 */
 	public int getPlayerAUndo()
 	{
 		return 3 - AUndos; // Makes it backwards (more readable for user)
 	}
+	
+	/**
+	 * Gets the number of undos of player B
+	 * @return the number of undos of player B
+	 */
 	public int getPlayerBUndo()
 	{
 		return 3 - BUndos; // Makes it backwards (more readable for user)
@@ -233,6 +252,7 @@ public class DataModel {
 			{
 				if (AUndos < MAX_UNDO)
 				{
+					lastStonePlaced = prevLastStonePlaced;
 					pits = clone;
 					AUndos++;
 					BUndos = 0;
@@ -248,6 +268,7 @@ public class DataModel {
 			{
 				if (BUndos < MAX_UNDO)
 				{
+					lastStonePlaced = prevLastStonePlaced;
 					pits = clone;
 					BUndos++;
 					AUndos = 0;
@@ -313,6 +334,7 @@ public class DataModel {
 			errorMsg = "";
 			freeTurn = "";
 			clone = pits.clone();
+			prevLastStonePlaced = lastStonePlaced;
 			int numStones = pits[pit];
 			pits[pit] = 0;
 
