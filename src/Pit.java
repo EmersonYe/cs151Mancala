@@ -14,8 +14,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- * This class creates a component and then paints the component shapes on it.
- * @author Team GraphiCats; Team members: Jeffery Aronhalt, Odkhuu Batmunkh, Kosta Rashev
+ * This class creates a component and then paints the Mancala shapes on it.
+ *   @author Team SJSD - Karl Lapuz, Matt Sternquist, Emerson Ye
  * 
  */
 public class Pit extends JComponent implements ChangeListener
