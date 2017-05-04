@@ -19,7 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-
+/**
+ * This is the main view class 
+ * @author Team SJSD - Karl Lapuz, Matt Sternquist, Emerson Ye
+ */
 public class MancalaView extends JPanel implements ChangeListener{
 	
 		private static final int threeStone = 3;
@@ -28,7 +31,6 @@ public class MancalaView extends JPanel implements ChangeListener{
 		public static final int boardHeight = 600;
 		public static final int frameWidth = 1400;
 		public static final int Width = 1400;
-		private String ans;
 		private DataModel board;
 		private Pit pit;
 		
@@ -87,7 +89,6 @@ public class MancalaView extends JPanel implements ChangeListener{
 				ActionListener()
 				{
 				public void actionPerformed(ActionEvent event){
-					ans = "Style 1";
 					pit = new Pit(board, new BoardStyle1());
 					aLabelPanel.add(pit, BorderLayout.CENTER);
 					openFrame1.dispose();
@@ -190,41 +191,39 @@ public class MancalaView extends JPanel implements ChangeListener{
 		}
 	
 	// Class to draw text vertically
-private class DrawTextVertically extends JLabel
-{
-	private String text;
-	private static final int width = 55;
-	private static final int height = 300;
-	private static final int offset = 15;
-
-	public DrawTextVertically(String text)
+	private class DrawTextVertically extends JLabel
 	{
-		this.text = text;
-	}
+		private String text;
+		private static final int width = 55;
+		private static final int height = 300;
+		private static final int offset = 15;
 
-	public Dimension getPreferredSize()
-	{
-		return new Dimension(width, height);
-	}
-
-	protected void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D) g;
-
-		setFont(new Font("Arial", 5, 25));
-		FontMetrics fontMetrics = g2.getFontMetrics();
-		int y = fontMetrics.getHeight();
-		for (int i = 0; i < text.length(); i++)
-		{
-			int x = offset + (fontMetrics.charWidth(text.charAt(i)) / 10);
-			g2.drawString(Character.toString(text.charAt(i)), x, y);
-
-			y = y + fontMetrics.getHeight();
+		public DrawTextVertically(String text){
+			this.text = text;
 		}
-		g2.dispose();
-	}
-}
 
+		public Dimension getPreferredSize(){
+			return new Dimension(width, height);
+		}
+
+		protected void paintComponent(Graphics g){
+			
+			super.paintComponent(g);
+			Graphics2D g2 = (Graphics2D) g;
+
+			setFont(new Font("Arial", 5, 25));
+			FontMetrics fontMetrics = g2.getFontMetrics();
+			int y = fontMetrics.getHeight();
+			
+			for (int i = 0; i < text.length(); i++){
+			
+				int x = offset + (fontMetrics.charWidth(text.charAt(i)) / 10);
+				g2.drawString(Character.toString(text.charAt(i)), x, y);
+
+				y = y + fontMetrics.getHeight();
+			}
+		g2.dispose();
+		}
+	}
 }
 	

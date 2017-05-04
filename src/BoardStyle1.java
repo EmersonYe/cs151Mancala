@@ -16,7 +16,7 @@ public class BoardStyle1 implements MancalaFormatter{
 	}
 
 	public Color setPitColor() {
-		return Color.YELLOW;
+		return Color.BLUE;
 	}
 
 	public Color setStoneColor() {

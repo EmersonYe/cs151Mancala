@@ -18,6 +18,7 @@ public class DataModel {
 	private int AUndos;
 	private int BUndos;
 	private int lastStonePlaced;
+	private String errorMsg;
 	private ArrayList<ChangeListener> listeners;
 
 	private static final int MAX_UNDO = 3;
@@ -36,7 +37,7 @@ public class DataModel {
 		isPlayerAsTurn = true;
 		canUndo = false;
 		lastStonePlaced = 0;
-
+		errorMsg= "";
 		AUndos = 0;
 		BUndos = 0;
 	}
@@ -89,6 +90,10 @@ public class DataModel {
 			return "Player A";
 		}
 		return "Player B";
+	}
+	
+	public String getErrorMsg(){
+		return errorMsg;
 	}
 
 	/**
@@ -246,6 +251,7 @@ public class DataModel {
 	{
 		if (pits[pitChosen] == 0 && !isMancala(pitChosen))
 		{
+			errorMsg = "This pit is empty";
 			System.out.println("This pit is empty");
 			return false;
 		}
@@ -255,6 +261,7 @@ public class DataModel {
 			{
 				return true;
 			}
+			errorMsg = "Can't access that pit";
 			System.out.println("Can't access that pit");
 			return false;
 		}
@@ -262,11 +269,13 @@ public class DataModel {
 		{
 			if (isPlayerAsTurn)
 			{
+				errorMsg = "Can't access that pit";
 				System.out.println("Can't access that pit");
 				return false;
 			}
 			return true;
 		}
+		errorMsg = "That's a mancala";
 		System.out.println("That's a mancala");
 		return false;
 	}
@@ -279,6 +288,7 @@ public class DataModel {
 	{
 		if (isMoveValid(pit))
 		{
+			errorMsg = "";
 			clone = pits.clone();
 			int numStones = pits[pit];
 			pits[pit] = 0;

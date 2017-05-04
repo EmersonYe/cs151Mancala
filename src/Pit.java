@@ -119,13 +119,20 @@ public class Pit extends JComponent implements ChangeListener
 		{
 			p.paintShape(g2);
 		}
-
-		g2.setColor(Color.RED);
+		
 		g2.setFont(new Font("Arial", 3, 30));
 		FontMetrics fontMetrics = g.getFontMetrics();
 		if (model.isGameOver() == false){
+		if (model.getErrorMsg() != ""){
+			g2.setColor(Color.BLACK);
+			g2.drawString("*Error: " + model.getErrorMsg() + "*", this.getX()-75 + this.getWidth() / 2
+					- fontMetrics.stringWidth("" + stones) / 2, this.getY()+75
+					+ this.getHeight() / 2 - fontMetrics.getAscent()
+					- LOCATION_OFFSET);
+		}
 		if (model.getTurn().equals("Player A"))
 		{
+			g2.setColor(Color.RED);
 			g2.drawString("Current Player:  A", this.getX()-75 + this.getWidth() / 2
 					- fontMetrics.stringWidth("" + stones) / 2, this.getY()
 					+ this.getHeight() / 2 - fontMetrics.getAscent()
@@ -133,6 +140,7 @@ public class Pit extends JComponent implements ChangeListener
 		}
 		else
 		{
+			g2.setColor(Color.RED);
 			g2.drawString("Current Player:  B", this.getX()-75 + this.getWidth() / 2
 					- fontMetrics.stringWidth("" + stones) / 2, this.getY()
 					+ this.getHeight() / 2 - fontMetrics.getAscent()
@@ -140,6 +148,7 @@ public class Pit extends JComponent implements ChangeListener
 		}
 		}
 		else{
+			g2.setColor(Color.RED);
 			g2.drawString(model.getWinner(), this.getX()-75 + this.getWidth() / 2
 					- fontMetrics.stringWidth("" + stones) / 2, this.getY()
 					+ this.getHeight() / 2 - fontMetrics.getAscent()
