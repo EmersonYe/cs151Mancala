@@ -101,6 +101,12 @@ public class DataModel {
 	public String getFreeTurn(){
 		return freeTurn;
 	}
+	public int getPlayerAUndo(){
+		return Math.abs(3-AUndos);
+	}
+	public int getPlayerBUndo(){
+		return Math.abs(3-BUndos);
+	}
 
 	/**
 	 * Sets the next turn based on the move made
@@ -400,15 +406,15 @@ public class DataModel {
 	{
 		if (pits[PLAYER_A_MANCALA] > pits[PLAYER_B_MANCALA])
 		{
-			return "Player A is the winner!";
+			return "GAMEOVER: Player A is the winner!";
 		}
 		else if (pits[PLAYER_B_MANCALA] > pits[PLAYER_A_MANCALA])
 		{
-			return "Player B is the winner!";
+			return "GAMEOVER: Player B is the winner!";
 		}
 		else
 		{
-			return "It's a draw!";
+			return "GAMEOVER: It's a draw!";
 		}
 	}
 }

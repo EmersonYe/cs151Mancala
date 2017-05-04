@@ -123,6 +123,7 @@ public class Pit extends JComponent implements ChangeListener
 		g2.setFont(new Font("Arial", 3, 30));
 		FontMetrics fontMetrics = g.getFontMetrics();
 		if (model.isGameOver() == false){
+			
 		if(model.getFreeTurn() !=""){
 			g2.setColor(Color.ORANGE);
 			g2.drawString(model.getFreeTurn(), this.getX()-75 + this.getWidth() / 2
@@ -140,7 +141,7 @@ public class Pit extends JComponent implements ChangeListener
 		if (model.getTurn().equals("Player A"))
 		{
 			g2.setColor(Color.RED);
-			g2.drawString("Current Player:  A", this.getX()-75 + this.getWidth() / 2
+			g2.drawString("Current Player:  A       Undos:" + model.getPlayerAUndo(), this.getX()-75 + this.getWidth() / 2
 					- fontMetrics.stringWidth("" + stones) / 2, this.getY()
 					+ this.getHeight() / 2 - fontMetrics.getAscent()
 					- LOCATION_OFFSET);
@@ -148,7 +149,7 @@ public class Pit extends JComponent implements ChangeListener
 		else
 		{
 			g2.setColor(Color.RED);
-			g2.drawString("Current Player:  B", this.getX()-75 + this.getWidth() / 2
+			g2.drawString("Current Player:  B       Undos:" + model.getPlayerBUndo(), this.getX()-75 + this.getWidth() / 2
 					- fontMetrics.stringWidth("" + stones) / 2, this.getY()
 					+ this.getHeight() / 2 - fontMetrics.getAscent()
 					- LOCATION_OFFSET);
@@ -183,8 +184,5 @@ public class Pit extends JComponent implements ChangeListener
 	 * Sets the style formatter.
 	 * @param aFormatter a new style formatter
 	 */
-	public void setFormatter(MancalaFormatter aFormatter)
-	{
-		formatter = aFormatter;
-	}
+	
 }
