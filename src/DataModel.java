@@ -224,7 +224,6 @@ public class DataModel {
 				setTurn();
 			}
 		}
-		System.out.println(lastStonePlaced);
 		this.update();
 	}
 	
