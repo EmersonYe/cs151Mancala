@@ -33,6 +33,7 @@ public class MancalaView extends JPanel implements ChangeListener{
 		public static final int Width = 1400;
 		private DataModel board;
 		private Pit pit;
+		private int resetNum;
 		
 		
 	public MancalaView (final DataModel board){
@@ -57,7 +58,7 @@ public class MancalaView extends JPanel implements ChangeListener{
 				ActionListener()
 				{
 				public void actionPerformed(ActionEvent event){
-					board.setStones(threeStone);
+					board.reset(threeStone);
 					gameFrame.pack();
 					gameFrame.setVisible(true);
 					openFrame2.dispose();
@@ -67,7 +68,7 @@ public class MancalaView extends JPanel implements ChangeListener{
 				ActionListener()
 				{
 				public void actionPerformed(ActionEvent event){
-					board.setStones(fourStone);
+					board.reset(fourStone);
 					gameFrame.pack();
 					gameFrame.setVisible(true);
 					openFrame2.dispose();
