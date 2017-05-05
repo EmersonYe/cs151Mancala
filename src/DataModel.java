@@ -260,6 +260,7 @@ public class DataModel {
 				}
 				else
 				{
+					errorMsg = "Can't undo, Player B has to move!";
 					System.out.println("Can't undo, Player B has to move!");
 					isPlayerAsTurn = !isPlayerAsTurn;
 				}
@@ -276,6 +277,7 @@ public class DataModel {
 				}
 				else
 				{
+					errorMsg = "Can't undo, Player A has to move!";
 					System.out.println("Can't undo, Player A has to move!");
 					isPlayerAsTurn = !isPlayerAsTurn;
 				}
