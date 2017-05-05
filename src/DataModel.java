@@ -119,7 +119,8 @@ public class DataModel {
 	 * Gets the error message that the player made
 	 * @return the error the current player made
 	 */
-	public String getErrorMsg(){
+	public String getErrorMsg()
+	{
 		return errorMsg;
 	}
 	
@@ -246,7 +247,6 @@ public class DataModel {
 	{
 		if (canUndo)
 		{
-			freeTurn = "";
 			setTurn();
 			if (isPlayerAsTurn)
 			{
@@ -260,7 +260,7 @@ public class DataModel {
 				}
 				else
 				{
-					System.out.println("Can't undo, Player B has to move!");
+					errorMsg = "Ran out of undos, Player B has to move!";
 					isPlayerAsTurn = !isPlayerAsTurn;
 				}
 			}
@@ -276,14 +276,14 @@ public class DataModel {
 				}
 				else
 				{
-					System.out.println("Can't undo, Player A has to move!");
+					errorMsg = "Ran out of undos, Player A has to move!";
 					isPlayerAsTurn = !isPlayerAsTurn;
 				}
 			}
 		}
 		else
 		{
-			System.out.println("Make a move first!");
+			errorMsg = "Make a move first!";
 		}
 		this.update();
 	}
@@ -299,7 +299,6 @@ public class DataModel {
 		if (pits[pitChosen] == 0 && !isMancala(pitChosen))
 		{
 			errorMsg = "This pit is empty";
-			System.out.println("This pit is empty");
 			return false;
 		}
 		if (pitChosen >= 0 && pitChosen < 6)
@@ -308,22 +307,19 @@ public class DataModel {
 			{
 				return true;
 			}
-			errorMsg = "Can't access that pit";
-			System.out.println("Can't access that pit");
+			errorMsg = "Can't access this pit";
 			return false;
 		}
 		else if (pitChosen >= 7 && pitChosen < 13)
 		{
 			if (isPlayerAsTurn)
 			{
-				errorMsg = "Can't access that pit";
-				System.out.println("Can't access that pit");
+				errorMsg = "Can't access this pit";
 				return false;
 			}
 			return true;
 		}
 		errorMsg = "That's a mancala";
-		System.out.println("That's a mancala");
 		return false;
 	}
 
