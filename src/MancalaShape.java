@@ -92,28 +92,28 @@ public class MancalaShape
      * Sets the number of the stones.
      * @param number the given number
      */
-    public void setNumStones(int number)
+    public void setNumStones(int num)
     {
-        numStones = number;
+        numStones = num;
     }
     
     /**
      * Sets the shape.
      * @param aShape the given shape
      */
-    public void setShape(Shape aShape)
+    public void setShape(Shape s)
     {
-        shape = aShape;
+        shape = s;
     }
     
     /**
-     * CHecks if a point is in the shape.
+     * Checks if a point is in the shape.
      * @param aPoint the point
      * @return false if the point is not in the shape, otherwise true
      */
-    public boolean contains(Point2D aPoint)
+    public boolean contains(Point2D point)
     {
-        if(!shape.contains(aPoint))
+        if(!shape.contains(point))
             return false;
         else
             return true;
@@ -132,6 +132,7 @@ public class MancalaShape
        
         double radius = Math.min(this.height, this.width) / 4.0;
         
+        // Draws integer number of stones on board
         if (numStones > 0)
         {
              g2.setColor(Color.WHITE);
@@ -141,6 +142,8 @@ public class MancalaShape
              
              g2.drawString("" + numStones, this.x + width/2 - metrics.stringWidth(""+numStones) / 2, this.y + height/2 + metrics.getDescent() / 2);
         }
+        
+        // Draws graphics of stones
         for(int i = 0; i < numStones; i++)
         {
             double angle = (2 * Math.PI) / numStones * (i + 1);

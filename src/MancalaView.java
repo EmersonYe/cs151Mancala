@@ -53,6 +53,7 @@ public class MancalaView extends JPanel implements ChangeListener{
 		JFrame openFrame2 = new JFrame("Welcome to the Mancala Game! Please choose the number of starting stones.");
 		openFrame2.setLayout(new FlowLayout());
 		
+		// Button for 3 stone option
 		JButton stone3 = new JButton("Three stones");
 		stone3.addActionListener(new
 				ActionListener()
@@ -63,6 +64,8 @@ public class MancalaView extends JPanel implements ChangeListener{
 					gameFrame.setVisible(true);
 					openFrame2.dispose();
 				}});
+		
+		// Button for 4 stone option
 		JButton stone4 = new JButton("Four stones");
 		stone4.addActionListener(new
 				ActionListener()
@@ -85,6 +88,7 @@ public class MancalaView extends JPanel implements ChangeListener{
 		
 		JPanel aLabelPanel = new JPanel();
 		
+		// Button for board style 1
 		JButton style1 = new JButton("Style 1");
 		style1.addActionListener(new
 				ActionListener()
@@ -96,6 +100,8 @@ public class MancalaView extends JPanel implements ChangeListener{
 					openFrame2.pack();
 					openFrame2.setVisible(true);
 				}});
+		
+		// Button for board style 2
 		JButton style2 = new JButton("Style 2");
 		style2.addActionListener(new
 				ActionListener()
@@ -171,7 +177,7 @@ public class MancalaView extends JPanel implements ChangeListener{
 		
 		board.attach(this);
 		
-		
+		// Button for undo
 		JButton undoButton = new JButton("Undo move");
 		undoButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -179,6 +185,7 @@ public class MancalaView extends JPanel implements ChangeListener{
 			}
 		});
 		
+		// Button for reset
 		JButton resetButton = new JButton("Reset Game");
 		resetButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -187,6 +194,7 @@ public class MancalaView extends JPanel implements ChangeListener{
 			}
 		});
 		
+		// Adding undo and reset to game board
 		gameFrame.add(resetButton);
 		gameFrame.add(undoButton);
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -199,7 +207,7 @@ public class MancalaView extends JPanel implements ChangeListener{
 		super.repaint();
 		}
 	
-	// Class to draw text vertically
+	// Class to draw text vertically to help label Mancalas
 	private class DrawTextVertically extends JLabel
 	{
 		private String text;

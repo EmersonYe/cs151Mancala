@@ -24,7 +24,7 @@ public class Pit extends JComponent implements ChangeListener
 	private DataModel model;
 	private MancalaFormatter formatter;
 	private int[] stones;
-	private static final int MANCALA_SIZE = 14;
+	private static final int mancalaSize = 14;
 	
 	/**
 	 * Constructs a Mancala component.
@@ -35,7 +35,7 @@ public class Pit extends JComponent implements ChangeListener
 	{
 		this.model = model;
 		this.formatter = formatter;
-		stones = new int[MANCALA_SIZE];
+		stones = new int[mancalaSize];
 
 		model.attach(this);
 
@@ -67,32 +67,33 @@ public class Pit extends JComponent implements ChangeListener
 		final int X = 160;
 		final int topY = 0;
 		final int bottomY = 320;
-		final int MANCALA_HEIGHT = 305;
-		final int MANCALA_B_X = 10;
-		final int MANCALA_A_INDEX = 6;
-		final int MANCALA_B_INDEX = 13;
+		final int mancalaHeight = 305;
+		final int mancalaBWidth = 10;
+		final int aIndex = 6;
+		final int bIndex = 13;
 
 		Color pitColor = formatter.setPitColor();
 		Color stoneColor = formatter.setStoneColor();
-
-		int n = MANCALA_A_INDEX;
-		for (int i = 0; i < MANCALA_SIZE; i++)
+		
+		// Adds components to ArrayList pit depending on what kind of component it is
+		int n = aIndex;
+		for (int i = 0; i < mancalaSize; i++)
 		{
-			if (i == MANCALA_A_INDEX)
+			if (i == aIndex)
 			{
-				pits.add(new MancalaShape((i + 1) * X, topY+55, WIDTH, MANCALA_HEIGHT, pitColor, stoneColor));
+				pits.add(new MancalaShape((i + 1) * X, topY+55, WIDTH, mancalaHeight, pitColor, stoneColor));
 				pits.get(i).setShape(formatter.setMancalaShape(pits.get(i)));
 				pits.get(i).setNumStones(stones[i]);
 			}
-			else if (i >= 0 && i < MANCALA_A_INDEX)
+			else if (i >= 0 && i < aIndex)
 			{
 				pits.add(new MancalaShape((i + 1) * X, bottomY, WIDTH, HEIGHT, pitColor, stoneColor));
 				pits.get(i).setShape(formatter.setPitShape(pits.get(i)));
 				pits.get(i).setNumStones(stones[i]);
 			}
-			else if (i == MANCALA_B_INDEX)
+			else if (i == bIndex)
 			{
-				pits.add(new MancalaShape(MANCALA_B_X, topY+55, WIDTH, MANCALA_HEIGHT, pitColor, stoneColor));
+				pits.add(new MancalaShape(mancalaBWidth, topY+55, WIDTH, mancalaHeight, pitColor, stoneColor));
 				pits.get(i).setShape(formatter.setMancalaShape(pits.get(i)));
 				pits.get(i).setNumStones(stones[i]);
 			}
@@ -114,7 +115,8 @@ public class Pit extends JComponent implements ChangeListener
 		final int LOCATION_OFFSET = 15;
 
 		Graphics2D g2 = (Graphics2D) g;
-
+		
+		// Paints the list of pits
 		for (MancalaShape p : pits)
 		{
 			p.paintShape(g2);
@@ -122,6 +124,8 @@ public class Pit extends JComponent implements ChangeListener
 		
 		g2.setFont(new Font("Arial", 3, 30));
 		FontMetrics fontMetrics = g.getFontMetrics();
+		
+		// Sets the text on the board displaying current player, error message, free turn message, game over message and undo message
 		if (model.isGameOver() == false){
 			
 		if(model.getFreeTurn() !=""){
@@ -169,9 +173,12 @@ public class Pit extends JComponent implements ChangeListener
 	 */
 	public void stateChanged(ChangeEvent e)
 	{
+		// Reset array with pits with the current data
 		boardComponent();
+		
 		stones = model.getBoardData();
-
+		
+		// Sets stone for the new pits
 		for (int i = 0; i < pits.size(); i++)
 		{
 			pits.get(i).setNumStones(stones[i]);
@@ -179,10 +186,4 @@ public class Pit extends JComponent implements ChangeListener
 
 		repaint();
 	}
-
-	/**
-	 * Sets the style formatter.
-	 * @param aFormatter a new style formatter
-	 */
-	
 }
